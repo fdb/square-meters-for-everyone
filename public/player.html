@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/player.css" />
+    <title>M² — Square Meters for Everyone!</title>
+  </head>
+  <body>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: 'AIzaSyBlCMuv9Gr3rXGW2eHYf2QMvz5auexWF8g',
+        authDomain: 'squaremetersforeveryone.firebaseapp.com',
+        databaseURL: 'https://squaremetersforeveryone.firebaseio.com',
+        projectId: 'squaremetersforeveryone',
+        storageBucket: 'squaremetersforeveryone.appspot.com',
+        messagingSenderId: '410060604044',
+        appId: '1:410060604044:web:a5d5f8586661b557cfb1a9',
+        measurementId: 'G-1FC7EBTK88',
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="js/player.js" type="module"></script>
+  </body>
+</html>
