@@ -3,11 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="css/upload.css" />
+    <title>M² — Square Meters for Everyone!</title>
   </head>
   <body>
-    <h1>
-      Coming soon....
-    </h1>
+    <div class="wrapper">
+      <img src="img/upload-header.png" alt="" />
+      <div class="content">
+        <img src="img/upload-logo.png" alt="" width="50" />
+        <p>
+          Hello! Thank you for scanning our QR-code, and welcome to M². The M² project revolves around reclaiming and
+          opening up square meters in public spaces, in order to make these spaces truly public again. Therefore, we are
+          now passing the square meters in this space on to you. What would you like to say or show here? Upload your
+          photo, message or design with the button below to claim this space and become a part of it yourself.
+        </p>
+        <input type="file" id="file" style="display: none;" />
+        <button class="upload"><img src="img/upload-arrow.svg" width="16" height="16" /><span> Upload</span></button>
+        <div id="progress"></div>
+      </div>
+      <img src="img/upload-footer.png" alt="" />
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: 'AIzaSyBlCMuv9Gr3rXGW2eHYf2QMvz5auexWF8g',
+        authDomain: 'squaremetersforeveryone.firebaseapp.com',
+        databaseURL: 'https://squaremetersforeveryone.firebaseio.com',
+        projectId: 'squaremetersforeveryone',
+        storageBucket: 'squaremetersforeveryone.appspot.com',
+        messagingSenderId: '410060604044',
+        appId: '1:410060604044:web:a5d5f8586661b557cfb1a9',
+        measurementId: 'G-1FC7EBTK88',
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="js/upload.js" type="module"></script>
   </body>
 </html>
