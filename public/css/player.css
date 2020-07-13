@@ -26,12 +26,12 @@ body {
 .poster {
   position: relative;
   height: 100vh;
-  width: auto;
+  width: 100vh;
 }
 
 .background {
   object-fit: contain;
-  position: relative;
+  position: absolute;
   z-index: 999;
 }
 
