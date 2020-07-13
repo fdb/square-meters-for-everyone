@@ -31,7 +31,7 @@ body {
 
 .background {
   object-fit: contain;
-  position: center;
+  position: absolute;
   z-index: 999;
 }
 
