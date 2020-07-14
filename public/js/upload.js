@@ -31,7 +31,7 @@ function onChooseFile(e) {
     'state_changed',
     (snapshot) => {
       const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      document.querySelector('#progress').innerHTML = `Uploading ${uploadProgress}%`;
+      document.querySelector('#progress').innerHTML = `Uploading ${uploadProgress.toFixed(0)}%`;
     },
     (error) => {
       showMessage(`Error while uploading. Is your file too big? (${error.code})`);
