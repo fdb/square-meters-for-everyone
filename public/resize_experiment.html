@@ -39,7 +39,8 @@
       <span><button id="upload">Upload</button></span>
     </div>
     <div class="images">
-      <img src="img/background.png" alt="" id="sourceImage" />
+      <input type="file" id="file" />
+      <img src="#" alt="" id="sourceImage" />
       <img src="#" alt="" id="destinationImage" />
     </div>
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
@@ -62,12 +63,39 @@
     <script>
       // Encode images using https://github.com/eugeneware/jpeg-js
       function getImageDataFromImage2(img) {
+        const inWidth = img.naturalWidth;
+        const inHeight = img.naturalHeight;
+        const outWidth = 1080;
+        const outHeight = 1920;
+        const factor = Math.min(outWidth / inWidth, outHeight / inHeight);
+        let newWidth = inWidth * factor;
+        let newHeight = inHeight * factor;
+        let ar = 1;
+        if (newWidth < outWidth) ar = outWidth / newWidth;
+        if (Math.abs(ar - 1) < 1e-14 && newHeight < outHeight) ar = outHeight / newHeight;
+        newWidth *= ar;
+        newHeight *= ar;
+
+        // Calculate source rectangle
+        let cw = inWidth / (newWidth / outWidth);
+        let ch = inHeight / (newHeight / outHeight);
+        let cx = (inWidth - cw) * 0.5;
+        let cy = (inHeight - ch) * 0.5;
+
+        // const widthFactor = outWidth / inWidth;
+        // const heightFactor = outHeight / inHeight;
+        // const factor = Math.min(widthFactor, heightFactor);
+
+        // const left = (inWidth - outWidth + 1) / 2;
+        // const top = (inHeight - outHeight + 1) / 2;
+
         const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
+        canvas.width = outWidth;
+        canvas.height = outHeight;
         const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        return ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        ctx.drawImage(img, cx, cy, cw, ch, 0, 0, outWidth, outHeight);
+        return ctx.getImageData(0, 0, outWidth, outHeight);
       }
 
       function convert() {
@@ -79,7 +107,7 @@
         console.log(imageData);
         const jpegData = encode(imageData, quality);
         const blob = new Blob([jpegData.data], { type: 'image/jpeg' });
-        var imageUrl = URL.createObjectURL(blob);
+        const imageUrl = URL.createObjectURL(blob);
         document.querySelector('#destinationImage').src = imageUrl;
         return jpegData.data;
       }
@@ -100,9 +128,20 @@
           .catch((err) => showMessage(`Error: ${err.code}`));
       }
 
-      convert();
+      function readFile(e) {
+        const file = e.target.files[0];
+        const imageUrl = URL.createObjectURL(file);
+        document.querySelector('#sourceImage').src = imageUrl;
+        document.querySelector('#file').style.display = 'none';
+        document.querySelector('#sourceImage').addEventListener('load', () => {
+          convert();
+        });
+      }
+
+      // convert();
       document.querySelector('#quality').addEventListener('change', convert);
       document.querySelector('#upload').addEventListener('click', upload);
+      document.querySelector('#file').addEventListener('change', readFile);
     </script>
   </body>
 </html>
