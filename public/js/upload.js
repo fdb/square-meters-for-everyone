@@ -55,7 +55,6 @@ async function createImage(url) {
     .then((docRef) => {
       console.log('docRef', docRef);
       showMessage('Upload complete');
-      document.location = '/player';
     })
     .catch((error) => {
       showMessage('Error creating database entry.');
