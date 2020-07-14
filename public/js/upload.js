@@ -14,7 +14,7 @@ function showMessage(msg) {
   document.querySelector('#message').textContent = msg;
   window.setTimeout(() => {
     document.querySelector('#message').textContent = '';
-  }, 2000);
+  }, 5000);
 }
 
 function onChooseFile(e) {
@@ -34,7 +34,7 @@ function onChooseFile(e) {
       document.querySelector('#progress').innerHTML = `Uploading ${uploadProgress}%`;
     },
     (error) => {
-      showMessage('Error while uploading. Is your file too big?');
+      showMessage(`Error while uploading. Is your file too big? (${error.code})`);
     },
     async (snapshot) => {
       console.log('storageRef', storageRef);
