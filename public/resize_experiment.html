@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resize Experiment</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font: 14px sans-serif;
+      }
+      .controls {
+        background: #ccc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      img {
+        max-width: 100%;
+      }
+      .images {
+        margin: 0 auto;
+        width: 90%;
+        display: grid;
+        grid-gap: 20px;
+        grid-template-columns: 1fr 1fr;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="controls">
+      <span>Quality <input type="range" min="0" max="100" value="50" id="quality" /></span>
+      <span id="message"></span>
+      <span><button id="upload">Upload</button></span>
+    </div>
+    <div class="images">
+      <img src="img/background.png" alt="" id="sourceImage" />
+      <img src="#" alt="" id="destinationImage" />
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: 'AIzaSyBlCMuv9Gr3rXGW2eHYf2QMvz5auexWF8g',
+        authDomain: 'squaremetersforeveryone.firebaseapp.com',
+        databaseURL: 'https://squaremetersforeveryone.firebaseio.com',
+        projectId: 'squaremetersforeveryone',
+        storageBucket: 'squaremetersforeveryone.appspot.com',
+        messagingSenderId: '410060604044',
+        appId: '1:410060604044:web:a5d5f8586661b557cfb1a9',
+        measurementId: 'G-1FC7EBTK88',
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="https://unpkg.com/jpeg-js@0.4.1/lib/encoder.js"></script>
+    <script>
+      // Encode images using https://github.com/eugeneware/jpeg-js
+      function getImageDataFromImage2(img) {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        return ctx.getImageData(0, 0, canvas.width, canvas.height);
+      }
+
+      function convert() {
+        const quality = parseInt(document.querySelector('#quality').value);
+        console.log('convert', quality);
+        const imageData = getImageDataFromImage2(document.querySelector('#sourceImage'));
+
+        // const imageData = getImageDataFromImage(document.querySelector('#sourceImage'));
+        console.log(imageData);
+        const jpegData = encode(imageData, quality);
+        const blob = new Blob([jpegData.data], { type: 'image/jpeg' });
+        var imageUrl = URL.createObjectURL(blob);
+        document.querySelector('#destinationImage').src = imageUrl;
+        return jpegData.data;
+      }
+
+      function showMessage(msg) {
+        document.querySelector('#message').textContent = msg;
+        window.setTimeout(() => {
+          document.querySelector('#message').textContent = '';
+        }, 5000);
+      }
+
+      function upload() {
+        const imageData = convert();
+        const storageRef = firebase.storage().ref('resize-experiment.jpeg');
+        const task = storageRef
+          .put(imageData)
+          .then((snap) => showMessage('Uploaded'))
+          .catch((err) => showMessage(`Error: ${err.code}`));
+      }
+
+      convert();
+      document.querySelector('#quality').addEventListener('change', convert);
+      document.querySelector('#upload').addEventListener('click', upload);
+    </script>
+  </body>
+</html>
