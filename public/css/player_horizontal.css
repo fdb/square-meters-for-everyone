@@ -27,7 +27,6 @@ body {
   position: relative;
   width: 100vw;
   height: 56.25vw; /* 100vw *  1080 / 1920 */
-  background: green;
 }
 
 .background {
